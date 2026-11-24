@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Домашня бібліотека</h1>
+<p>Усього книг: {{ books|length }}</p>
+<a class="button" href="{{ url_for('add') }}">Додати книгу</a>
+<table>
+  <tr><th>ID</th><th>Назва</th><th>Автор</th><th>Жанр</th><th>Рік</th><th>Сторінок</th><th>Статус</th><th>Дії</th></tr>
+  {% for book in books %}
+  <tr>
+    <td>{{ book.id }}</td>
+    <td>{{ book.title }}</td>
+    <td>{{ book.author }}</td>
+    <td>{{ book.genre or '' }}</td>
+    <td>{{ book.year or '' }}</td>
+    <td>{{ book.pages or '' }}</td>
+    <td>{{ book.status }}</td>
+    <td>
+      <a class="button" href="{{ url_for('edit', item_id=book.id) }}">Редагувати</a>
+      <form class="inline" method="post" action="{{ url_for('delete', item_id=book.id) }}"
+            onsubmit="return confirm('Видалити книгу?');">
+        <button class="danger" type="submit">Видалити</button>
+      </form>
+    </td>
+  </tr>
+  {% else %}
+  <tr><td colspan="8">Книг ще немає.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
